@@ -3,9 +3,14 @@
 namespace quieteroks\components\web;
 
 use ArrayObject;
+use yii\base\Action;
+use yii\base\InlineAction;
+use yii\base\InvalidConfigException;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use yii\web\BadRequestHttpException;
 use quieteroks\components\base\ActionRule;
+use quieteroks\components\di\MethodArguments;
 
 abstract class Controller extends \yii\web\Controller
 {
@@ -39,6 +44,35 @@ abstract class Controller extends \yii\web\Controller
      * @return array|ActionRule[]
      */
     abstract protected function rules() : array;
+
+    /**
+     * Binds the parameters to the action.
+     *
+     * @param Action $action
+     * @param array $params
+     * @return array
+     * @throws BadRequestHttpException
+     */
+    public function bindActionParams($action, $params) : array
+    {
+        try {
+
+            if ($action instanceof InlineAction) {
+                $method = [$this, $action->actionMethod];
+            } else {
+                $method = [$action, 'run'];
+            }
+            $method = new MethodArguments($method, $params);
+            $args = $method->getArguments();
+
+        } catch (InvalidConfigException $e) {
+            throw new BadRequestHttpException(
+                $e->getMessage(), $e->getCode(), $e
+            );
+        }
+        $this->actionParams = $args;
+        return array_values($args);
+    }
 
     /**
      * Returns a compile actions access and verb rules.
