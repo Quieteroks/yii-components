@@ -1,0 +1,33 @@
+{
+    "name": "quieteroks/yii-components",
+    "type": "library",
+    "description": "Base components for yii templates",
+    "keywords": [
+        "components",
+        "di",
+        "i18n",
+        "framework",
+        "yii2",
+        "yii"
+    ],
+    "license": "GPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "Karavaev Ilya",
+            "email": "quieteroks@gmail.com"
+        }
+    ],
+    "support": {
+        "source": "https://github.com/Quieteroks/yii-components",
+        "issues": "https://github.com/Quieteroks/yii-components/issues"
+    },
+    "require": {
+        "php": ">=7.1.0",
+        "yiisoft/yii2": "~2.0.15"
+    },
+    "autoload": {
+        "psr-4": {
+            "quieteroks\\components\\": "src/"
+        }
+    }
+}
